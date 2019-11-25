@@ -1527,8 +1527,6 @@ public class Table {
             //.... Row: Case 4
             if (rEnd < rowNumber) {
 
-                throw new UnsupportedOperationException("Not yet implemented)");
-
                 //.... Row: Case 5
             } else {
 
@@ -1636,8 +1634,6 @@ public class Table {
 
             //.... Column: Case 4
             if (cEnd < colNumber) {
-
-                throw new UnsupportedOperationException("Not yet implemented)");
 
                 //.... Column: Case 5
             } else {
@@ -1812,8 +1808,6 @@ public class Table {
             //.... Row: Case 4
             if (rEnd < rowNumber) {
 
-                throw new UnsupportedOperationException("Not yet implemented)");
-
                 //.... Row: Case 5
             } else {
 
@@ -1892,8 +1886,6 @@ public class Table {
 
             //.... Column: Case 4
             if (cEnd < colNumber) {
-
-                throw new UnsupportedOperationException("Not yet implemented)");
 
                 //.... Column: Case 5
             } else {
