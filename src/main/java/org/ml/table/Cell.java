@@ -1,30 +1,9 @@
-/*
- * The MIT License
- *
- * Copyright 2019 Dr. Matthias Laux.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 package org.ml.table;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.ml.tools.PropertyManager;
 
@@ -41,7 +20,7 @@ public class Cell extends PropertyManager {
 
     private final Map<String, Object> content = new HashMap<>();
     private Object contentSingle = null;
-    private String type = null;
+    private Set<String> types = new HashSet<>();
     private int rowSpan = 1;
     private int colSpan = 1;
 
@@ -65,9 +44,8 @@ public class Cell extends PropertyManager {
         if (colSpan < 1) {
             throw new IllegalArgumentException("colSpan must be larger than 0");
         }
-        setColSpan(colSpan);
-        setRowSpan(rowSpan);
-        setAvoidOverwrites(false);
+        this.colSpan = colSpan;
+        this.rowSpan = rowSpan;
     }
 
     /**
@@ -102,15 +80,6 @@ public class Cell extends PropertyManager {
     }
 
     /**
-     * Retrieve the type defined for this cell.
-     *
-     * @return The type for this cell
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
      * Retrieve the number of rows that this cell spans.
      *
      * @return The number of rows that this cell spans
@@ -129,18 +98,15 @@ public class Cell extends PropertyManager {
     }
 
     /**
-     * Set type for this cell. Types are more of a hint to e. g. renderers that
-     * need to process the cell contents. Technically, any renderer can of
+     * Set a type for this cell. Types are more of a hint to e. g. renderers
+     * that need to process the cell contents. Technically, any renderer can of
      * course look at the objects stored as content and their types and use
      * these to apply the desired rendering operation. It can be easier though
      * if a hint is given as to what the content is supposed to represent. For
      * example, a string object stored as content could represent a URL or an
      * Email address.
      * <p>
-     * There can be only one type for a given cell. In more complex scenarios
-     * (where we have multiple objects stored as content) the keys for the
-     * content or property values may need to convey further information as to
-     * what to do with the content.
+     * There can be multiple types added here which are stored in a Set
      *
      * @param type The type to set for this cell
      * @return
@@ -149,7 +115,7 @@ public class Cell extends PropertyManager {
         if (type == null) {
             throw new IllegalArgumentException("type may not be null");
         }
-        this.type = type;
+        types.add(type);
         return this;
     }
 
@@ -164,11 +130,7 @@ public class Cell extends PropertyManager {
         if (type == null) {
             throw new IllegalArgumentException("type may not be null");
         }
-        if (this.type != null) {
-            return this.type.equals(type);
-        } else {
-            return false;
-        }
+        return types.contains(type);
     }
 
     /**
@@ -185,6 +147,9 @@ public class Cell extends PropertyManager {
     }
 
     /**
+     * Retrieve the anonymous content - an object which si not associated with a
+     * key
+     *
      * @return
      */
     public Object getContent() {
@@ -195,7 +160,7 @@ public class Cell extends PropertyManager {
      * Set a content object. Content objects can be anything and are used to
      * attach data to a cell.
      *
-     * @param key   The key by which this content object is identified
+     * @param key The key by which this content object is identified
      * @param value The actual content object
      * @return
      */
@@ -211,6 +176,9 @@ public class Cell extends PropertyManager {
     }
 
     /**
+     * Set the anonymous content object - this is not identified by a key. This
+     * is for simple use cases where we need only a text or a number, for example
+     *
      * @param value
      * @return
      */
@@ -291,8 +259,11 @@ public class Cell extends PropertyManager {
         sb.append(rowSpan);
         sb.append(" / colSpan = ");
         sb.append(colSpan);
-        sb.append(" / type = ");
-        sb.append(type);
+        sb.append(" / type(s) = ");
+        for (String type : types) {
+            sb.append(type);
+            sb.append('|');
+        }
         sb.append(" / ");
         for (String key : content.keySet()) {
             sb.append(key);
