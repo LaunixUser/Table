@@ -1,6 +1,9 @@
 package org.ml.table.content;
 
 /**
+ * A helper class to represent URL type information attached to a cell as
+ * content
+ *
  * @author Dr. Matthias Laux
  */
 public class UrlContent implements Comparable<UrlContent> {
@@ -10,9 +13,10 @@ public class UrlContent implements Comparable<UrlContent> {
     private String description = "";
 
     /**
-     * @param address
-     * @param text
-     * @param description
+     * @param address The actual URL
+     * @param text The text to be displayed for the URL
+     * @param description An additional description text which might be helpful,
+     * e. g. as alternate text
      */
     public UrlContent(String address, String text, String description) {
         if (address == null) {
