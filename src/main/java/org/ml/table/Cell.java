@@ -17,11 +17,12 @@ import java.util.Set;
 public class Cell {
 
     private final Map<String, Object> content = new HashMap<>();
-    private Object contentSingle = null;
-    private Set<String> types = new HashSet<>();
-    private Set<String> styles = new HashSet<>();
+    private Object contentSingle;
+    private final Set<String> types = new HashSet<>();
+    private final Set<String> styles = new HashSet<>();
     private int rowSpan = 1;
     private int colSpan = 1;
+    private String firstStyle;
 
     /**
      * Constructor for a simple cell with 1 row and 1 column
@@ -68,6 +69,9 @@ public class Cell {
             throw new NullPointerException("style may not be null");
         }
         styles.add(style.toString());
+        if (firstStyle == null) {
+            firstStyle = style.toString();
+        }
         return this;
     }
 
@@ -81,6 +85,9 @@ public class Cell {
             throw new NullPointerException("style may not be null");
         }
         styles.add(style);
+        if (firstStyle == null) {
+            firstStyle = style;
+        }
         return this;
     }
 
@@ -90,6 +97,15 @@ public class Cell {
      */
     public Set<String> getStyles() {
         return styles;
+    }
+
+    /**
+     *
+     * @return The first style string that was added, or null of none was added
+     * yet
+     */
+    public String getFirstStyle() {
+        return firstStyle;
     }
 
     /**

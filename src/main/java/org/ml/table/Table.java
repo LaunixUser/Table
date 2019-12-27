@@ -29,6 +29,11 @@ public class Table {
     /**
      *
      */
+    public static final int DEFAULT_TABLE_SIZE = 50;
+
+    /**
+     *
+     */
     public static final String TAG_EMPTY_VALUE = "";
     /**
      *
@@ -46,7 +51,7 @@ public class Table {
     private boolean[][] visible;
     private boolean[][] def;          // Mark whether a cell contains the default cell
     private final Map<IBoundaryLocation, BoundaryCondition> boundaryConditions = new HashMap<>();
-    private Map<RenderingContext, IRenderer> renderers = new HashMap<>();
+    private final Map<RenderingContext, IRenderer> renderers = new HashMap<>();
 
     /**
      * @since 1.1
@@ -72,6 +77,15 @@ public class Table {
      */
     public Table(int rowNumber, int colNumber) {
         this(0, 0, rowNumber, colNumber);
+    }
+
+    /**
+     * Constructor for a table where the logical indexes for rows and columns
+     * start at 0 and where the number of rows and columns is initially set by
+     * DEFAULT_TABLE_SIZE
+     */
+    public Table() {
+        this(0, 0, DEFAULT_TABLE_SIZE, DEFAULT_TABLE_SIZE);
     }
 
     /**
@@ -534,7 +548,7 @@ public class Table {
      * This is a convenience method simplifying individual calls to the methods
      * null null null null null null null null null null null null null null
      * null null null null null null null null null null null null null null
-     * null null null null null     {@link #compact(RowLocation)},
+     * null null null null null null null null null     {@link #compact(RowLocation)},
      * {@link #compact(ColumnLocation)}, and {@link #compact(InternalLocation)}.
      * See these methods for additional details.
      *

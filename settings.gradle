@@ -1,4 +1,4 @@
-rootProject.name = 'Table'
+rootProject.name = 'table'
 
 includeBuild '../LaunixTools'
 
