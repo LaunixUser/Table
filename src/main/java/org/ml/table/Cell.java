@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.ml.tools.PropertyManager;
-
 /**
  * This class represents cells in the table. Cells can span more than one row
  * and column. Instances of this class are also used to hold all data pertaining
@@ -16,11 +14,12 @@ import org.ml.tools.PropertyManager;
  * properties. This can come in quite handy as for example styling / rendering
  * information can be provided
  */
-public class Cell extends PropertyManager {
+public class Cell {
 
     private final Map<String, Object> content = new HashMap<>();
     private Object contentSingle = null;
     private Set<String> types = new HashSet<>();
+    private Set<String> styles = new HashSet<>();
     private int rowSpan = 1;
     private int colSpan = 1;
 
@@ -49,25 +48,48 @@ public class Cell extends PropertyManager {
     }
 
     /**
-     * Helper wrapper to allow for chained invocations
      *
-     * @param key
-     * @param value
+     * @param style
      * @return
      */
-    public Cell setProp(String key, String value) {
-        setProperty(key, value);
+    public boolean isOfStyle(String style) {
+        if (style == null) {
+            throw new NullPointerException("style may not be null");
+        }
+        return styles.contains(style);
+    }
+
+    /**
+     * @param style
+     * @return
+     */
+    public Cell addStyle(Enum style) {
+        if (style == null) {
+            throw new NullPointerException("style may not be null");
+        }
+        styles.add(style.toString());
         return this;
     }
 
     /**
-     * @param key
-     * @param e
+     *
+     * @param style
      * @return
      */
-    public Cell setProp(String key, Enum e) {
-        setProperty(key, e.toString());
+    public Cell addStyle(String style) {
+        if (style == null) {
+            throw new NullPointerException("style may not be null");
+        }
+        styles.add(style);
         return this;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Set<String> getStyles() {
+        return styles;
     }
 
     /**
@@ -111,7 +133,7 @@ public class Cell extends PropertyManager {
      * @param type The type to set for this cell
      * @return
      */
-    public Cell setType(String type) {
+    public Cell addType(String type) {
         if (type == null) {
             throw new IllegalArgumentException("type may not be null");
         }
@@ -177,7 +199,8 @@ public class Cell extends PropertyManager {
 
     /**
      * Set the anonymous content object - this is not identified by a key. This
-     * is for simple use cases where we need only a text or a number, for example
+     * is for simple use cases where we need only a text or a number, for
+     * example
      *
      * @param value
      * @return

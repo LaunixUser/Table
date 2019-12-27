@@ -77,8 +77,8 @@ public class Table {
     /**
      * Constructor for a table
      *
-     * @param row0      First logical index at upper edge of the table
-     * @param col0      First logical index at left edge of the table
+     * @param row0 First logical index at upper edge of the table
+     * @param col0 First logical index at left edge of the table
      * @param rowNumber Number of rows for the table
      * @param colNumber Number of columns for the table
      */
@@ -123,11 +123,11 @@ public class Table {
      * Tags can be used to identify entire rows or columns across e. g.
      * coalescing or growth operations.
      *
-     * @param tagLocation  Either rows or columns can be tagged
+     * @param tagLocation Either rows or columns can be tagged
      * @param logicalIndex The logical index of either the row or the column to
-     *                     tag
-     * @param tagName      The actual tag name
-     * @param tagValue     The actual tag value
+     * tag
+     * @param tagName The actual tag name
+     * @param tagValue The actual tag value
      * @since 1.1
      */
     public void addTag(Direction tagLocation, int logicalIndex, String tagName, String tagValue) {
@@ -167,10 +167,10 @@ public class Table {
     /**
      * Check for the presence of a tag
      *
-     * @param tagLocation  Either rows or columns can be tagged
+     * @param tagLocation Either rows or columns can be tagged
      * @param logicalIndex The logical index of either the row or the column to
-     *                     check for the tag
-     * @param tagName      The actual tag value
+     * check for the tag
+     * @param tagName The actual tag value
      * @return <code>true</code> if the tag is present, else <code>false</code>
      * @since 1.1
      */
@@ -244,8 +244,8 @@ public class Table {
      * renderer to react accordingly.
      *
      * @param internalLocation The location along which to coalesce. Can either
-     *                         be along rows or along columns
-     * @param type             The type to assign to the cell(s) created
+     * be along rows or along columns
+     * @param type The type to assign to the cell(s) created
      * @return <code>true</code> if cells were coalesced
      */
     public boolean coalesce(InternalLocation internalLocation, String type) {
@@ -276,7 +276,7 @@ public class Table {
                         } else if (scanning) {
 
                             cell = new Cell(1, c - cstart);
-                            cell.setType(type);
+                            cell.addType(type);
 
                             setCell(cell, r + row0, cstart + col0);
                             scanning = false;
@@ -290,7 +290,7 @@ public class Table {
                     if (scanning) {
 
                         cell = new Cell(1, c - cstart);
-                        cell.setType(type);
+                        cell.addType(type);
 
                         setCell(cell, r + row0, cstart + col0);
                         coalesced = true;
@@ -316,7 +316,7 @@ public class Table {
                         } else if (scanning) {
 
                             cell = new Cell(r - rstart, 1);
-                            cell.setType(type);
+                            cell.addType(type);
 
                             setCell(cell, rstart + row0, c + col0);
                             scanning = false;
@@ -330,7 +330,7 @@ public class Table {
                     if (scanning) {
 
                         cell = new Cell(r - rstart, 1);
-                        cell.setType(type);
+                        cell.addType(type);
 
                         setCell(cell, rstart + row0, c + col0);
                         coalesced = true;
@@ -349,7 +349,7 @@ public class Table {
      * Retrieve the boundary condition at the given boundary location
      *
      * @param boundaryLocation The boundary location where the information is to
-     *                         be retrieved
+     * be retrieved
      * @return The boundary condition at the desired boundary location
      */
     public BoundaryCondition getBoundaryCondition(IBoundaryLocation boundaryLocation) {
@@ -368,7 +368,7 @@ public class Table {
      * columns is increased by <code>count</code>.
      *
      * @param location Whether to add the columns at the left or the right edge
-     * @param count    The number of columns to add
+     * @param count The number of columns to add
      */
     public void addColumns(ColumnLocation location, int count) {
         if (location == null) {
@@ -459,7 +459,7 @@ public class Table {
      * increased by <code>count</code>.
      *
      * @param location Whether to add the rows at the top or the bottom edge
-     * @param count    The number of rows to add
+     * @param count The number of rows to add
      */
     public void addRows(RowLocation location, int count) {
         if (location == null) {
@@ -534,7 +534,7 @@ public class Table {
      * This is a convenience method simplifying individual calls to the methods
      * null null null null null null null null null null null null null null
      * null null null null null null null null null null null null null null
-     * null null null null     {@link #compact(RowLocation)},
+     * null null null null null     {@link #compact(RowLocation)},
      * {@link #compact(ColumnLocation)}, and {@link #compact(InternalLocation)}.
      * See these methods for additional details.
      *
@@ -817,7 +817,7 @@ public class Table {
      * to {@link #compact(RowLocation)} and {@link #compact(ColumnLocation)}.
      *
      * @param internalLocation The desired internal location where to compact
-     *                         the table (effectively by rows or by columns)
+     * the table (effectively by rows or by columns)
      * @return <code>true</code> if some cells were removed
      */
     public boolean compact(InternalLocation internalLocation) {
@@ -981,7 +981,7 @@ public class Table {
      *
      * @param tagLocation
      * @param startLogicalIndex
-     * @param endLogicalIndex   The last logical index plus 1 (!)
+     * @param endLogicalIndex The last logical index plus 1 (!)
      * @since 1.1
      */
     private void removeTags(Direction tagLocation, int startLogicalIndex, int endLogicalIndex) {
@@ -1415,8 +1415,8 @@ public class Table {
      * </table>
      *
      * @param cell The cell to add to the table
-     * @param row  The logical row index
-     * @param col  The logical column index
+     * @param row The logical row index
+     * @param col The logical column index
      * @return A {@link SetResult} instance (or <code>null</code>, see above)
      * @see BoundaryCondition
      */
@@ -2054,10 +2054,10 @@ public class Table {
     /**
      * Set the boundary condition for the given boundary location.
      *
-     * @param boundaryLocation  The location for which the boundary condition is
-     *                          to be set
+     * @param boundaryLocation The location for which the boundary condition is
+     * to be set
      * @param boundaryCondition The boundary condition to establish for this
-     *                          location
+     * location
      */
     public void setBoundaryCondition(IBoundaryLocation boundaryLocation, BoundaryCondition boundaryCondition) {
         if (boundaryLocation == null) {

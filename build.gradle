@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.ml'
-//version '1.0-SNAPSHOT'
+version '2.0.0'
 
 sourceCompatibility = 1.8
 
@@ -16,6 +16,6 @@ dependencies {
         [group: 'org.apache.poi', name: 'poi', version: '[4.1,)'],
         [group: 'org.apache.poi', name: 'poi-ooxml', version: '[4.1,)'],
         [group: 'org.apache.poi', name: 'ooxml-schemas', version: '[1.4,)'],
-        fileTree(dir: "../LaunixTools/build/libs", include: '*.jar')
+        [group: 'org.ml', name: 'LaunixTools', version: '[2.0,)']
     )
 }
