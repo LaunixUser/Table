@@ -11,9 +11,4 @@ import org.ml.table.Table;
  */
 public interface IRenderer {
 
-    /**
-     * This can be used to indicate to a renderer that the content is a
-     * percentage-type value
-     */
-    String HINT_PERCENTAGE = "percentage";
 }

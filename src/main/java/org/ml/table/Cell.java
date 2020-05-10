@@ -18,7 +18,6 @@ public class Cell {
 
     private final Map<String, Object> content = new HashMap<>();
     private Object contentSingle;
-    private final Set<String> types = new HashSet<>();
     private final Set<String> styles = new HashSet<>();
     private int rowSpan = 1;
     private int colSpan = 1;
@@ -61,7 +60,21 @@ public class Cell {
     }
 
     /**
+     *
      * @param style
+     * @return
+     */
+    public boolean isOfStyle(Enum style) {
+        if (style == null) {
+            throw new NullPointerException("style may not be null");
+        }
+        return styles.contains(style.toString());
+    }
+
+    /**
+     * @param style A style value as Enum which is however stored as string
+     * value. This is for convenience only
+     *
      * @return
      */
     public Cell addStyle(Enum style) {
@@ -133,42 +146,6 @@ public class Cell {
      */
     public int getColSpan() {
         return colSpan;
-    }
-
-    /**
-     * Set a type for this cell. Types are more of a hint to e. g. renderers
-     * that need to process the cell contents. Technically, any renderer can of
-     * course look at the objects stored as content and their types and use
-     * these to apply the desired rendering operation. It can be easier though
-     * if a hint is given as to what the content is supposed to represent. For
-     * example, a string object stored as content could represent a URL or an
-     * Email address.
-     * <p>
-     * There can be multiple types added here which are stored in a Set
-     *
-     * @param type The type to set for this cell
-     * @return
-     */
-    public Cell addType(String type) {
-        if (type == null) {
-            throw new IllegalArgumentException("type may not be null");
-        }
-        types.add(type);
-        return this;
-    }
-
-    /**
-     * Check whether a given type is set for this cell.
-     *
-     * @param type The type to check for in this cell
-     * @return A boolean indicating whether the given type has been set for this
-     * cell
-     */
-    public boolean isOfType(String type) {
-        if (type == null) {
-            throw new IllegalArgumentException("type may not be null");
-        }
-        return types.contains(type);
     }
 
     /**
@@ -298,11 +275,6 @@ public class Cell {
         sb.append(rowSpan);
         sb.append(" / colSpan = ");
         sb.append(colSpan);
-        sb.append(" / type(s) = ");
-        for (String type : types) {
-            sb.append(type);
-            sb.append('|');
-        }
         sb.append(" / ");
         for (String key : content.keySet()) {
             sb.append(key);

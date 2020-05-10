@@ -27,5 +27,6 @@ package org.ml.table.render;
  * @author Dr. Matthias Laux
  */
 public enum RenderingContext {
-    excel, velocity
+    EXCEL,
+    VELOCITY
 }

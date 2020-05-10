@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    #if ($!CSS_FILE) then
+    <link rel="stylesheet" href="$CSS_FILE">
+    #endif
+</head>
+
+<body>
+
+    <table>
+       
+        #foreach ($row in [$table.row0..$table.rowEnd])
+        <tr>
+          #foreach ($col in [$table.col0..$table.colEnd])
+          #if ($table.isVisible($row, $col))
+          #if ($table.isDefaultCell($row, $col))
+          <td></td>
+          #else
+          #set ($cell = $table.getCell($row, $col))
+          <td rowspan=$cell.rowSpan colspan=$cell.colSpan class="$cell.getFirstStyle()">
+          #if ($table.hasRenderer($renderingContext))
+            $table.getRenderer($renderingContext).renderCell($cell)
+          #else
+            $cell.getContent("name")
+          #end
+          </td>                       
+          #end
+          #end
+        #end
+        </tr>
+        #end
+
+      </table>
+
+
+</body>
+</html>

@@ -253,19 +253,12 @@ public class Table {
      * will be checked for consecutive blocks of cells containing the default
      * cell. These blocks will be replaced by one cell covering them all.
      * <p>
-     * This method creates new cell instances using the <code>name</code> and
-     * <code>types</code> arguments provided which can then be used in the
-     * renderer to react accordingly.
      *
      * @param internalLocation The location along which to coalesce. Can either
      * be along rows or along columns
-     * @param type The type to assign to the cell(s) created
      * @return <code>true</code> if cells were coalesced
      */
-    public boolean coalesce(InternalLocation internalLocation, String type) {
-        if (type == null) {
-            throw new IllegalArgumentException("type may not be null");
-        }
+    public boolean coalesce(InternalLocation internalLocation) {
         if (internalLocation == null) {
             throw new IllegalArgumentException("internalLocation may not be null");
         }
@@ -290,7 +283,6 @@ public class Table {
                         } else if (scanning) {
 
                             cell = new Cell(1, c - cstart);
-                            cell.addType(type);
 
                             setCell(cell, r + row0, cstart + col0);
                             scanning = false;
@@ -304,7 +296,6 @@ public class Table {
                     if (scanning) {
 
                         cell = new Cell(1, c - cstart);
-                        cell.addType(type);
 
                         setCell(cell, r + row0, cstart + col0);
                         coalesced = true;
@@ -330,7 +321,6 @@ public class Table {
                         } else if (scanning) {
 
                             cell = new Cell(r - rstart, 1);
-                            cell.addType(type);
 
                             setCell(cell, rstart + row0, c + col0);
                             scanning = false;
@@ -344,7 +334,6 @@ public class Table {
                     if (scanning) {
 
                         cell = new Cell(r - rstart, 1);
-                        cell.addType(type);
 
                         setCell(cell, rstart + row0, c + col0);
                         coalesced = true;
