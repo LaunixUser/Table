@@ -1,5 +1,6 @@
 package org.ml.table.render.impl;
 
+import java.time.LocalDate;
 import org.apache.poi.ss.usermodel.Cell;
 import org.ml.table.content.EmailContent;
 import org.ml.table.content.UrlContent;
@@ -7,14 +8,20 @@ import org.ml.table.render.IExcelRenderer;
 
 /**
  * A renderer with some (hopefully) reasonable default behavior to render a Cell
- * for an Excel sheet. Note that this renders only the anonymous content
- * in the Cell object. For more complex scenarios involving multiple named
- * content objects, a specialized rendered needs to be implemented
+ * for an Excel sheet. Note that this renders only the anonymous content in the
+ * Cell object. For more complex scenarios involving multiple named content
+ * objects, a specialized rendered needs to be implemented
  *
  * @author mlaux
  */
-
 public class SimpleExcelRenderer implements IExcelRenderer {
+
+    /**
+     *
+     */
+    public SimpleExcelRenderer() {
+
+    }
 
     /**
      * @param excelCell
@@ -37,12 +44,18 @@ public class SimpleExcelRenderer implements IExcelRenderer {
 
                 if (content instanceof Integer) {
                     excelCell.setCellValue((Integer) content);
+                } else if (content instanceof Long) {
+                    excelCell.setCellValue((Long) content);
+                } else if (content instanceof Short) {
+                    excelCell.setCellValue((Short) content);
                 } else if (content instanceof Float) {
                     excelCell.setCellValue((Float) content);
                 } else if (content instanceof Double) {
                     excelCell.setCellValue((Double) content);
                 } else if (content instanceof Boolean) {
                     excelCell.setCellValue((Boolean) content);
+                } else if (content instanceof LocalDate) {
+                    excelCell.setCellValue((LocalDate) content);
                 } else if (content instanceof String) {
                     excelCell.setCellValue((String) content);
                 } else if (content instanceof EmailContent) {

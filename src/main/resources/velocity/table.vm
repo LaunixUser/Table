@@ -1,34 +1,48 @@
 <html>
 
 <head>
-    #if ($!CSS_FILE) then
-    <link rel="stylesheet" href="$CSS_FILE">
-    #endif
+    #if ($!cssFileReference) 
+        <link rel="stylesheet" href="$cssFileReference">
+    #end
+
+   #if ($!cssFileInclude) 
+        <style>
+        #include ($cssFileInclude)
+        </style>
+    #end
+
+    #if ($!title) 
+        <title>$title</title>
+    #end
 </head>
 
 <body>
 
-    <table>
+    #if ($!title) 
+    <h1>$title</h1>
+    #end
+
+    <table border="1">
        
         #foreach ($row in [$table.row0..$table.rowEnd])
-        <tr>
-          #foreach ($col in [$table.col0..$table.colEnd])
-          #if ($table.isVisible($row, $col))
-          #if ($table.isDefaultCell($row, $col))
-          <td></td>
-          #else
-          #set ($cell = $table.getCell($row, $col))
-          <td rowspan=$cell.rowSpan colspan=$cell.colSpan class="$cell.getFirstStyle()">
-          #if ($table.hasRenderer($renderingContext))
-            $table.getRenderer($renderingContext).renderCell($cell)
-          #else
-            $cell.getContent("name")
-          #end
-          </td>                       
-          #end
-          #end
-        #end
-        </tr>
+            <tr>
+            #foreach ($col in [$table.col0..$table.colEnd])
+                #if ($table.isVisible($row, $col))
+                    #if ($table.isDefaultCell($row, $col))
+                        <td></td>
+                    #else
+                        #set ($cell = $table.getCell($row, $col))
+                        <td rowspan=$cell.rowSpan colspan=$cell.colSpan class="$cell.getStyle()">
+                            #if ($table.hasRenderer($renderingContext))
+                                $table.getRenderer($renderingContext).renderCell($cell)
+                            #else
+                                $cell.getContent("name")
+                            #end
+                        </td>                       
+                    #end
+                #end
+            #end
+            </tr>
         #end
 
       </table>

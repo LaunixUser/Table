@@ -4,7 +4,7 @@ import org.ml.tools.velocity.VelocityFileType;
 import org.ml.table.Cell;
 import org.ml.table.content.EmailContent;
 import org.ml.table.content.UrlContent;
-import static org.ml.table.output.impl.Style.HINT_PERCENTAGE;
+import static org.ml.table.output.Hint.HINT_PERCENTAGE;
 import org.ml.table.render.IVelocityRenderer;
 
 /**
@@ -61,7 +61,7 @@ public class SimpleVelocityRenderer implements IVelocityRenderer {
 
             Object content = cell.getContent();
 
-            if (cell.isOfStyle(HINT_PERCENTAGE)) {
+            if (cell.containsHint(HINT_PERCENTAGE)) {
 
                 double val = 0.0;
                 if (content instanceof Double) {
@@ -71,7 +71,7 @@ public class SimpleVelocityRenderer implements IVelocityRenderer {
                 } else if (content instanceof Integer) {
                     val = 100.0 * (Integer) content;
                 } else {
-                    throw new UnsupportedOperationException("content is of style " + HINT_PERCENTAGE + " and instance of "
+                    throw new UnsupportedOperationException("content contains Hint '" + HINT_PERCENTAGE + "' and is instance of "
                             + content.getClass() + " - don't know how to handle this");
                 }
                 return String.format(percentageFormat, val) + "%";

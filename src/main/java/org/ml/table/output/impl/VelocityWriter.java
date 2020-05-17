@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.velocity.Template;
@@ -18,6 +19,9 @@ import static org.ml.tools.velocity.VelocityConfig.RequiredKey;
 import static org.ml.tools.velocity.VelocityConfig.OptionalKey;
 
 /**
+ * A simple default writer to create output of a table via Velocity without
+ * having to implement any code separately. A simple default template is
+ * provided which can be used directly.
  *
  * @author osboxes
  */
@@ -27,17 +31,20 @@ public class VelocityWriter {
     private PropertyManager propertyManager;
 
     /**
-     *
+     * These are the keys injected into the VelocityContext
      */
-    public enum KEY {
-        renderingContext, table, renderer
+    private enum ContextKey {
+        renderingContext, table, tables;
     }
 
     /**
-     *
+     * These are additional context keys supported by the default templates
      */
-    public enum OPTIONAL_PROPERTY {
-        CSS_FILE;
+    public enum OptionalContextKey {
+        /**
+         * Path to a CSS file to reference in the header
+         */
+        cssFileReference, cssFileInclude;
     }
 
     /**
@@ -48,6 +55,7 @@ public class VelocityWriter {
     }
 
     /**
+     * All properties submitted here will be added to the VelocityContext
      *
      * @param propertyManager
      */
@@ -59,28 +67,73 @@ public class VelocityWriter {
     }
 
     /**
+     * Write a single table
      *
      * @param table
      * @param fileName
      * @throws Exception
      */
     public void write(Table table, String fileName) throws Exception {
+        if (table == null) {
+            throw new NullPointerException("table may not be null");
+        }
+        write(null, table, fileName);
+    }
 
-        PropertyManager pm = new PropertyManager();
+    /**
+     * Write multiple tables into a single file
+     *
+     * @param tables The keys are used as headers for the tables
+     * @param fileName
+     * @throws Exception
+     */
+    public void write(Map<String, Table> tables, String fileName) throws Exception {
+        if (tables == null) {
+            throw new NullPointerException("tables may not be null");
+        }
+        write(tables, null, fileName);
+    }
+
+    /**
+     * Generic helper
+     *
+     * @param tables
+     * @param table
+     * @param fileName
+     * @throws Exception
+     */
+    private void write(Map<String, Table> tables, Table table, String fileName) throws Exception {
+        if (fileName == null) {
+            throw new NullPointerException("fileName may not be null");
+        }
+
+        PropertyManager velocityPropertyManager = new PropertyManager();
+
+        //.... A separate template file name can be specified which is then used instead of the default template contained in the package
         if (propertyManager.containsProperty(RequiredKey.templateName)) {
-            pm.setProperty(RequiredKey.templateName, propertyManager.getProperty(RequiredKey.templateName));
+            velocityPropertyManager.setProperty(RequiredKey.templateName, propertyManager.getProperty(RequiredKey.templateName));
+            if (propertyManager.containsProperty(OptionalKey.templateDirectory)) {
+                velocityPropertyManager.setProperty(OptionalKey.templateDirectory, propertyManager.getProperty(OptionalKey.templateDirectory));
+            } else {
+                throw new UnsupportedOperationException("If a template file is specified, a template directory also needs ot be provided");
+            }
         } else {
-            pm.setProperty(RequiredKey.templateName, "velocity/table.vm");
-        }
-        if (propertyManager.containsProperty(OptionalKey.templateDirectory)) {
-            pm.setProperty(OptionalKey.templateDirectory, propertyManager.getProperty(OptionalKey.templateDirectory));
+            if (table != null) {
+                velocityPropertyManager.setProperty(RequiredKey.templateName, "velocity/table.vm");
+            } else {
+                velocityPropertyManager.setProperty(RequiredKey.templateName, "velocity/tables.vm");
+            }
         }
 
-        VelocityConfig velocityConfig = new VelocityConfig(pm);
+        VelocityConfig velocityConfig = new VelocityConfig(velocityPropertyManager);
         Template template = velocityConfig.getTemplate();
         VelocityContext context = new VelocityContext();
-        context.put(KEY.renderingContext.toString(), RenderingContext.VELOCITY);
-        context.put(KEY.table.toString(), table);
+        context.put(ContextKey.renderingContext.toString(), RenderingContext.VELOCITY);
+        if (table != null) {
+            context.put(ContextKey.table.toString(), table);
+        } else {
+            context.put(ContextKey.tables.toString(), tables);
+        }
         for (String key : propertyManager.getProperties().keySet()) {
             context.put(key, propertyManager.getProperty(key));
         }

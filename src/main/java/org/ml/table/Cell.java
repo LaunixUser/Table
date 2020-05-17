@@ -18,10 +18,10 @@ public class Cell {
 
     private final Map<String, Object> content = new HashMap<>();
     private Object contentSingle;
-    private final Set<String> styles = new HashSet<>();
+    private String style;
+    private final Set<String> hints = new HashSet<>();
     private int rowSpan = 1;
     private int colSpan = 1;
-    private String firstStyle;
 
     /**
      * Constructor for a simple cell with 1 row and 1 column
@@ -49,42 +49,51 @@ public class Cell {
 
     /**
      *
-     * @param style
+     * @param hint
      * @return
      */
-    public boolean isOfStyle(String style) {
-        if (style == null) {
-            throw new NullPointerException("style may not be null");
+    public boolean containsHint(String hint) {
+        if (hint == null) {
+            throw new NullPointerException("hint may not be null");
         }
-        return styles.contains(style);
+        return hints.contains(hint);
     }
 
     /**
      *
-     * @param style
+     * @param hint
      * @return
      */
-    public boolean isOfStyle(Enum style) {
-        if (style == null) {
-            throw new NullPointerException("style may not be null");
+    public boolean containsHint(Enum hint) {
+        if (hint == null) {
+            throw new NullPointerException("hint may not be null");
         }
-        return styles.contains(style.toString());
+        return hints.contains(hint.toString());
     }
 
     /**
-     * @param style A style value as Enum which is however stored as string
-     * value. This is for convenience only
      *
+     * @param hint
      * @return
      */
-    public Cell addStyle(Enum style) {
-        if (style == null) {
-            throw new NullPointerException("style may not be null");
+    public Cell addHint(String hint) {
+        if (hint == null) {
+            throw new NullPointerException("hint may not be null");
         }
-        styles.add(style.toString());
-        if (firstStyle == null) {
-            firstStyle = style.toString();
+        hints.add(hint);
+        return this;
+    }
+
+    /**
+     *
+     * @param hint
+     * @return
+     */
+    public Cell addHint(Enum hint) {
+        if (hint == null) {
+            throw new NullPointerException("hint may not be null");
         }
+        hints.add(hint.toString());
         return this;
     }
 
@@ -93,14 +102,11 @@ public class Cell {
      * @param style
      * @return
      */
-    public Cell addStyle(String style) {
+    public Cell setStyle(Enum style) {
         if (style == null) {
             throw new NullPointerException("style may not be null");
         }
-        styles.add(style);
-        if (firstStyle == null) {
-            firstStyle = style;
-        }
+        this.style = style.toString();
         return this;
     }
 
@@ -108,17 +114,29 @@ public class Cell {
      *
      * @return
      */
-    public Set<String> getStyles() {
-        return styles;
+    public String getStyle() {
+        return style;
     }
 
     /**
      *
-     * @return The first style string that was added, or null of none was added
-     * yet
+     * @param style
+     * @return
      */
-    public String getFirstStyle() {
-        return firstStyle;
+    public Cell setStyle(String style) {
+        if (style == null) {
+            throw new NullPointerException("style may not be null");
+        }
+        this.style = style;
+        return this;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Set<String> getHints() {
+        return hints;
     }
 
     /**
@@ -260,29 +278,6 @@ public class Cell {
             throw new IllegalArgumentException("colSpan must be greater than 0");
         }
         this.colSpan = colSpan;
-    }
-
-    /**
-     * The overridden {@link Object#toString()} method. This is primarily for
-     * debugging purposes.
-     *
-     * @return A string representation of the instance with all relevant data
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Cell: rowSpan = ");
-        sb.append(rowSpan);
-        sb.append(" / colSpan = ");
-        sb.append(colSpan);
-        sb.append(" / ");
-        for (String key : content.keySet()) {
-            sb.append(key);
-            sb.append(" : ");
-            sb.append(content.get(key));
-            sb.append("\n");
-        }
-        return sb.toString();
     }
 
 }
