@@ -1663,7 +1663,7 @@ public class Table {
                 if (!def[rIndex][cIndex]) {
                     throw new IllegalArgumentException("Cell conflict when trying to add cell at location (" + rIndex + "/" + cIndex + "): already covered by a cell");
                 }
-                cells[rIndex][cIndex] = cell;
+                cells[rIndex][cIndex] = cell;    // The same cell is referenced from all the logical cells
                 visible[rIndex][cIndex] = false;
                 def[rIndex][cIndex] = false;
             }

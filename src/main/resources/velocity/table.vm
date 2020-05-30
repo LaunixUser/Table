@@ -47,6 +47,10 @@
 
       </table>
 
+<p/>
+#if ($!date) 
+  <h4>$date</h4>
+#end
 
 </body>
 </html>

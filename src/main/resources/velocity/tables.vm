@@ -22,10 +22,16 @@
     <h1>$title</h1>
     #end
 
+    <ul>
+    #foreach ($tableKey in $tables.keySet())
+        <li><a href="#$tableKey">$tableKey</a></li>
+    #end
+    </ul>
+
     #foreach ($tableKey in $tables.keySet())
     #set ($table = $tables.get($tableKey))
 
-    <h3> $tableKey </h3>
+    <h3 id="$tableKey"> $tableKey </h3>
 
     <table border="1">
        
@@ -53,6 +59,11 @@
     </table>
 
     #end
+
+<p/>
+#if ($!date) 
+  <h4>$date</h4>
+#end
 
 </body>
 </html>

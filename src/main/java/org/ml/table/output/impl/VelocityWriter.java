@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,12 +31,20 @@ public class VelocityWriter {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(VelocityWriter.class.getName());
     private PropertyManager propertyManager;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy | HH:mm");
 
     /**
      * These are the keys injected into the VelocityContext
      */
-    private enum ContextKey {
-        renderingContext, table, tables;
+    private enum PrivateContextKey {
+        renderingContext, table, tables, date
+    }
+
+    /**
+     *
+     */
+    public enum ContextKey {
+        title
     }
 
     /**
@@ -128,15 +138,16 @@ public class VelocityWriter {
         VelocityConfig velocityConfig = new VelocityConfig(velocityPropertyManager);
         Template template = velocityConfig.getTemplate();
         VelocityContext context = new VelocityContext();
-        context.put(ContextKey.renderingContext.toString(), RenderingContext.VELOCITY);
+        context.put(PrivateContextKey.renderingContext.toString(), RenderingContext.VELOCITY);
         if (table != null) {
-            context.put(ContextKey.table.toString(), table);
+            context.put(PrivateContextKey.table.toString(), table);
         } else {
-            context.put(ContextKey.tables.toString(), tables);
+            context.put(PrivateContextKey.tables.toString(), tables);
         }
         for (String key : propertyManager.getProperties().keySet()) {
             context.put(key, propertyManager.getProperty(key));
         }
+        context.put(PrivateContextKey.date.toString(), formatter.format(ZonedDateTime.now()));
 
         BufferedWriter writer;
         File file = new File(fileName);

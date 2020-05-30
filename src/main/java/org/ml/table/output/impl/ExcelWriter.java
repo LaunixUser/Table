@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.ml.table.Table;
 import org.ml.table.render.IExcelRenderer;
 import org.ml.table.render.RenderingContext;
@@ -81,17 +82,29 @@ public class ExcelWriter {
         for (int r = table.getRow0(); r <= table.getRowEnd(); r++) {
             Row row = sheet.createRow(r);
             for (int c = table.getCol0(); c <= table.getColEnd(); c++) {
+
                 Cell cell = row.createCell(c);
-                org.ml.table.Cell dataCell = table.getCell(r, c);
-                if (styleMap != null) {
-                    String style = dataCell.getStyle();
-                    if (style != null) {
-                        if (styleMap.containsKey(style)) {
-                            cell.setCellStyle(styleMap.get(style));
+
+                //.... If a logical call spans more than 1 row and/or column, we only show the one that is actually visible and hide the others
+                if (table.isVisible(r, c)) {
+                    
+                    org.ml.table.Cell dataCell = table.getCell(r, c);
+                    
+                    if (styleMap != null) {
+                        String style = dataCell.getStyle();
+                        if (style != null) {
+                            if (styleMap.containsKey(style)) {
+                                cell.setCellStyle(styleMap.get(style));
+                            }
                         }
                     }
+                    renderer.renderCell(cell, dataCell);
+
+                    //.... Add a merged region in Excel
+                    if (dataCell.getRowSpan() > 1 || dataCell.getColSpan() > 1) {
+                        sheet.addMergedRegion(new CellRangeAddress(r, r + dataCell.getRowSpan() - 1, c, c + dataCell.getColSpan() - 1));
+                    }
                 }
-                renderer.renderCell(cell, dataCell);
             }
         }
 
