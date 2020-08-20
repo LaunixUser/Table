@@ -8,17 +8,20 @@ package org.ml.table.content;
  */
 public class UrlContent implements Comparable<UrlContent> {
 
+    private static final boolean DEFAULT_APPEND_FILE_EXTENSION = false;
     private String address = "";
     private String text = "";
     private String description = "";
+    private boolean appendFileExtension = DEFAULT_APPEND_FILE_EXTENSION;
 
     /**
      * @param address The actual URL
      * @param text The text to be displayed for the URL
      * @param description An additional description text which might be helpful,
      * e. g. as alternate text
+     * @param appendFileExtension
      */
-    public UrlContent(String address, String text, String description) {
+    public UrlContent(String address, String text, String description, boolean appendFileExtension) {
         if (address == null) {
             throw new NullPointerException("address may not be null");
         }
@@ -31,6 +34,27 @@ public class UrlContent implements Comparable<UrlContent> {
         this.address = address;
         this.text = text;
         this.description = description;
+        this.appendFileExtension = appendFileExtension;
+    }
+
+    /**
+     *
+     * @param address
+     * @param text
+     * @param description
+     */
+    public UrlContent(String address, String text, String description) {
+        this(address, text, description, DEFAULT_APPEND_FILE_EXTENSION);
+    }
+
+    /**
+     *
+     * @param address
+     * @param text
+     * @param appendFileExtension
+     */
+    public UrlContent(String address, String text, boolean appendFileExtension) {
+        this(address, text, "", appendFileExtension);
     }
 
     /**
@@ -60,6 +84,14 @@ public class UrlContent implements Comparable<UrlContent> {
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean appendFileExtension() {
+        return appendFileExtension;
     }
 
     /**

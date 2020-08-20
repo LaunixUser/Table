@@ -3,6 +3,7 @@ package org.ml.table.render.impl;
 import org.ml.tools.velocity.VelocityFileType;
 import org.ml.table.Cell;
 import org.ml.table.content.EmailContent;
+import org.ml.table.content.UrlAnchor;
 import org.ml.table.content.UrlContent;
 import static org.ml.table.output.Hint.HINT_PERCENTAGE;
 import org.ml.table.render.IVelocityRenderer;
@@ -93,7 +94,14 @@ public class SimpleVelocityRenderer implements IVelocityRenderer {
                     return "<a href=\"mailto:" + address + "\">" + address + "</a>";
                 } else if (content instanceof UrlContent) {
                     UrlContent urlContent = (UrlContent) content;
-                    return "<a href=\"" + urlContent.getAddress() + VelocityFileType.html.getExtension() + "\">" + urlContent.getText() + "</a> " + urlContent.getDescription();
+                    if (urlContent.appendFileExtension()) {
+                        return "<a href=\"" + urlContent.getAddress() + VelocityFileType.html.getExtension() + "\">" + urlContent.getText() + "</a> " + urlContent.getDescription();
+                    } else {
+                        return "<a href=\"" + urlContent.getAddress() + "\">" + urlContent.getText() + "</a> " + urlContent.getDescription();
+                    }
+                } else if (content instanceof UrlAnchor) {
+                    UrlAnchor urlAnchor = (UrlAnchor) content;
+                    return "<a name=\"" + urlAnchor.getAddress() + "\">" + urlAnchor.getText() + "</a>";
                 } else {
                     return content.toString();
                 }

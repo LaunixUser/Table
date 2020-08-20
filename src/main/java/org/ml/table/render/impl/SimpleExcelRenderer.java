@@ -3,6 +3,7 @@ package org.ml.table.render.impl;
 import java.time.LocalDate;
 import org.apache.poi.ss.usermodel.Cell;
 import org.ml.table.content.EmailContent;
+import org.ml.table.content.UrlAnchor;
 import org.ml.table.content.UrlContent;
 import org.ml.table.render.IExcelRenderer;
 
@@ -64,6 +65,9 @@ public class SimpleExcelRenderer implements IExcelRenderer {
                 } else if (content instanceof UrlContent) {
                     UrlContent urlContent = (UrlContent) content;
                     excelCell.setCellValue(urlContent.getText());
+                } else if (content instanceof UrlAnchor) {
+                    UrlAnchor urlAnchor = (UrlAnchor) content;
+                    excelCell.setCellValue(urlAnchor.getText());
                 } else {
                     excelCell.setCellValue(content.toString());
                 }
