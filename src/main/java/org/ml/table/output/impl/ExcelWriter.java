@@ -29,7 +29,7 @@ public class ExcelWriter {
     private final static Logger LOGGER = LoggerFactory.getLogger(ExcelWriter.class.getName());
     private final ExcelFileType excelFileType = ExcelFileType.xlsx;
     private final String sheetName = "Data";
-    private Map<String, CellStyle> styleMap;
+    private Map<Enum, CellStyle> styleMap;
     private Workbook workbook;
 
     /**
@@ -44,7 +44,7 @@ public class ExcelWriter {
      * @param workbook
      * @param styleMap
      */
-    public ExcelWriter(Workbook workbook, Map<String, CellStyle> styleMap) {
+    public ExcelWriter(Workbook workbook, Map<Enum, CellStyle> styleMap) {
         if (styleMap == null) {
             throw new NullPointerException("styleMap may not be null");
         }
@@ -87,11 +87,11 @@ public class ExcelWriter {
 
                 //.... If a logical call spans more than 1 row and/or column, we only show the one that is actually visible and hide the others
                 if (table.isVisible(r, c)) {
-                    
+
                     org.ml.table.Cell dataCell = table.getCell(r, c);
-                    
+
                     if (styleMap != null) {
-                        String style = dataCell.getStyle();
+                        Enum style = dataCell.getStyle();
                         if (style != null) {
                             if (styleMap.containsKey(style)) {
                                 cell.setCellStyle(styleMap.get(style));
@@ -164,7 +164,7 @@ public class ExcelWriter {
                     Cell cell = row.createCell(c);
                     org.ml.table.Cell dataCell = table.getCell(r, c);
                     if (styleMap != null) {
-                        String style = dataCell.getStyle();
+                        Enum style = dataCell.getStyle();
                         if (style != null) {
                             if (styleMap.containsKey(style)) {
                                 cell.setCellStyle(styleMap.get(style));

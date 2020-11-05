@@ -18,7 +18,7 @@ public class Cell {
 
     private final Map<String, Object> content = new HashMap<>();
     private Object contentSingle;
-    private String style;
+    private Enum style;
     private final Set<String> hints = new HashSet<>();
     private int rowSpan = 1;
     private int colSpan = 1;
@@ -106,7 +106,7 @@ public class Cell {
         if (style == null) {
             throw new NullPointerException("style may not be null");
         }
-        this.style = style.toString();
+        this.style = style;
         return this;
     }
 
@@ -114,7 +114,7 @@ public class Cell {
      *
      * @return
      */
-    public String getStyle() {
+    public Enum getStyle() {
         return style;
     }
 
@@ -123,13 +123,13 @@ public class Cell {
      * @param style
      * @return
      */
-    public Cell setStyle(String style) {
-        if (style == null) {
-            throw new NullPointerException("style may not be null");
-        }
-        this.style = style;
-        return this;
-    }
+//    public Cell setStyle(String style) {
+//        if (style == null) {
+//            throw new NullPointerException("style may not be null");
+//        }
+//        this.style = style;
+//        return this;
+//    }
 
     /**
      *

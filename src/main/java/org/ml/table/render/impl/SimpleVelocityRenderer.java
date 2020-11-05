@@ -6,7 +6,7 @@ import org.ml.table.content.EmailContent;
 import org.ml.table.content.UrlAnchor;
 import org.ml.table.content.UrlContent;
 import static org.ml.table.output.Hint.HINT_PERCENTAGE;
-import org.ml.table.render.IVelocityRenderer;
+import org.ml.table.render.AbstractVelocityRenderer;
 
 /**
  * A renderer with some (hopefully) reasonable default behavior to render a Cell
@@ -16,7 +16,7 @@ import org.ml.table.render.IVelocityRenderer;
  *
  * @author mlaux
  */
-public class SimpleVelocityRenderer implements IVelocityRenderer {
+public class SimpleVelocityRenderer extends AbstractVelocityRenderer {
 
     public final static String DEFAULT_DOUBLE_FORMAT = "%.2f";
     public final static String DEFAULT_PERCENTAGE_FORMAT = "%.2f";
