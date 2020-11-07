@@ -1,12 +1,12 @@
 package org.ml.table.render.impl;
 
-import org.ml.tools.velocity.VelocityFileType;
 import org.ml.table.Cell;
 import org.ml.table.content.EmailContent;
 import org.ml.table.content.UrlAnchor;
 import org.ml.table.content.UrlContent;
 import static org.ml.table.output.Hint.HINT_PERCENTAGE;
 import org.ml.table.render.AbstractVelocityRenderer;
+import org.ml.tools.FileType;
 
 /**
  * A renderer with some (hopefully) reasonable default behavior to render a Cell
@@ -95,7 +95,7 @@ public class SimpleVelocityRenderer extends AbstractVelocityRenderer {
                 } else if (content instanceof UrlContent) {
                     UrlContent urlContent = (UrlContent) content;
                     if (urlContent.appendFileExtension()) {
-                        return "<a href=\"" + urlContent.getAddress() + VelocityFileType.html.getExtension() + "\">" + urlContent.getText() + "</a> " + urlContent.getDescription();
+                        return "<a href=\"" + urlContent.getAddress() + FileType.HTML.getExtension() + "\">" + urlContent.getText() + "</a> " + urlContent.getDescription();
                     } else {
                         return "<a href=\"" + urlContent.getAddress() + "\">" + urlContent.getText() + "</a> " + urlContent.getDescription();
                     }

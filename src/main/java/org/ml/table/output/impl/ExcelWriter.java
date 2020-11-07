@@ -16,7 +16,7 @@ import org.ml.table.Table;
 import org.ml.table.render.IExcelRenderer;
 import org.ml.table.render.RenderingContext;
 import org.ml.table.render.impl.SimpleExcelRenderer;
-import org.ml.tools.excel.ExcelFileType;
+import org.ml.tools.FileType;
 import org.ml.tools.excel.ExcelTools;
 import org.ml.tools.logging.LoggerFactory;
 
@@ -27,7 +27,7 @@ import org.ml.tools.logging.LoggerFactory;
 public class ExcelWriter {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ExcelWriter.class.getName());
-    private final ExcelFileType excelFileType = ExcelFileType.xlsx;
+    private final FileType excelFileType = FileType.XLSX;
     private final String sheetName = "Data";
     private Map<Enum, CellStyle> styleMap;
     private Workbook workbook;
