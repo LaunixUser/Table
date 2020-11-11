@@ -537,7 +537,7 @@ public class Table {
      * This is a convenience method simplifying individual calls to the methods
      * null null null null null null null null null null null null null null
      * null null null null null null null null null null null null null null
-     * null null null null null null null null null     {@link #compact(RowLocation)},
+     * null null null null null null null null null null     {@link #compact(RowLocation)},
      * {@link #compact(ColumnLocation)}, and {@link #compact(InternalLocation)}.
      * See these methods for additional details.
      *
@@ -2021,6 +2021,7 @@ public class Table {
                     for (String cKey : cells[r][c].getContents().keySet()) {
                         buf.write("<br>" + cKey + ": " + cells[r][c].getContent(cKey) + "</br>");
                     }
+                    buf.write("<br>" + cells[r][c].getContent() + "</br>");
                     buf.write("Default: " + def[r][c]);
                     buf.newLine();
                 }
