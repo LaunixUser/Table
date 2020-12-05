@@ -597,7 +597,7 @@ public class Table {
 
             int c = 0;
             boolean removable = true;
-
+            
             //.... Count removable columns on the left end
             do {
                 for (int r = 0; r < rowNumber; r++) {
@@ -609,7 +609,7 @@ public class Table {
                     count++;
                     c++;
                 }
-            } while (removable);
+            } while (removable && c < colNumber);
 
             if (count > 0) {
 
@@ -651,7 +651,7 @@ public class Table {
                     c--;
                     count++;
                 }
-            } while (removable);
+            } while (removable && c > 0);
 
             if (count > 0) {
 
@@ -680,7 +680,7 @@ public class Table {
         }
 
         colNumber -= count;
-
+        
         //.... Check whether the dimensions of the table have changed
         return row0 != old_row0 || col0 != old_col0 || rowNumber != old_rowNumber || colNumber != old_colNumber;
 

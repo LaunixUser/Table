@@ -58,9 +58,9 @@ public class SimpleVelocityRenderer extends AbstractVelocityRenderer {
             throw new IllegalArgumentException("cell may not be null");
         }
 
-        if (cell.getContent() != null) {
+        Object content = cell.getContent();
 
-            Object content = cell.getContent();
+        if (content != null) {
 
             if (cell.containsHint(HINT_PERCENTAGE)) {
 
@@ -94,11 +94,13 @@ public class SimpleVelocityRenderer extends AbstractVelocityRenderer {
                     return "<a href=\"mailto:" + address + "\">" + address + "</a>";
                 } else if (content instanceof UrlContent) {
                     UrlContent urlContent = (UrlContent) content;
+                    StringBuilder sb = new StringBuilder(200);
+                    sb.append("<a href=\"").append(urlContent.getAddress());
                     if (urlContent.appendFileExtension()) {
-                        return "<a href=\"" + urlContent.getAddress() + FileType.HTML.getExtension() + "\">" + urlContent.getText() + "</a> " + urlContent.getDescription();
-                    } else {
-                        return "<a href=\"" + urlContent.getAddress() + "\">" + urlContent.getText() + "</a> " + urlContent.getDescription();
+                        sb.append(FileType.HTML.getExtension());
                     }
+                    sb.append("\" title=\"").append(urlContent.getTooltip()).append("\">").append(urlContent.getText()).append("</a>");
+                    return sb.toString();
                 } else if (content instanceof UrlAnchor) {
                     UrlAnchor urlAnchor = (UrlAnchor) content;
                     return "<a name=\"" + urlAnchor.getAddress() + "\">" + urlAnchor.getText() + "</a>";

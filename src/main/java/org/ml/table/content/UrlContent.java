@@ -11,29 +11,28 @@ public class UrlContent implements Comparable<UrlContent> {
     private static final boolean DEFAULT_APPEND_FILE_EXTENSION = false;
     private String address = "";
     private String text = "";
-    private String description = "";
+    private String tooltip = "";
     private boolean appendFileExtension = DEFAULT_APPEND_FILE_EXTENSION;
 
     /**
      * @param address The actual URL
      * @param text The text to be displayed for the URL
-     * @param description An additional description text which might be helpful,
-     * e. g. as alternate text
+     * @param tooltip An additional tooltip 
      * @param appendFileExtension
      */
-    public UrlContent(String address, String text, String description, boolean appendFileExtension) {
+    public UrlContent(String address, String text, String tooltip, boolean appendFileExtension) {
         if (address == null) {
             throw new NullPointerException("address may not be null");
         }
         if (text == null) {
             throw new NullPointerException("text may not be null");
         }
-        if (description == null) {
+        if (tooltip == null) {
             throw new NullPointerException("description may not be null");
         }
         this.address = address;
         this.text = text;
-        this.description = description;
+        this.tooltip = tooltip;
         this.appendFileExtension = appendFileExtension;
     }
 
@@ -41,10 +40,10 @@ public class UrlContent implements Comparable<UrlContent> {
      *
      * @param address
      * @param text
-     * @param description
+     * @param tooltip
      */
-    public UrlContent(String address, String text, String description) {
-        this(address, text, description, DEFAULT_APPEND_FILE_EXTENSION);
+    public UrlContent(String address, String text, String tooltip) {
+        this(address, text, tooltip, DEFAULT_APPEND_FILE_EXTENSION);
     }
 
     /**
@@ -82,8 +81,8 @@ public class UrlContent implements Comparable<UrlContent> {
     /**
      * @return
      */
-    public String getDescription() {
-        return description;
+    public String getTooltip() {
+        return tooltip;
     }
 
     /**
