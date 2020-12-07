@@ -521,6 +521,22 @@ public class Table {
     }
 
     /**
+     *
+     * @return
+     */
+    public boolean isEmpty() {
+        boolean empty = true;
+        for (int r = 0; r < rowNumber; r++) {
+            for (int c = 0; c < colNumber; c++) {
+                if (!def[r][c]) {
+                    return false;
+                }
+            }
+        }
+        return empty;
+    }
+
+    /**
      * Removes empty cells at all four boundary locations.
      * <p>
      * This is a convenience method comprising four individual method calls.
@@ -528,16 +544,16 @@ public class Table {
      * @return <code>true</code> if some cells removed
      */
     public boolean compact() {
-        return compact(ColumnLocation.LEFT) & compact(ColumnLocation.RIGHT) & compact(RowLocation.TOP) & compact(RowLocation.BOTTOM);
+        if (isEmpty()) {
+            throw new UnsupportedOperationException("The table has no cells defined - compacting it would make it disappear. Is this the expected behaviour here?");
+        }
+        return compact(ColumnLocation.LEFT) | compact(ColumnLocation.RIGHT) | compact(RowLocation.TOP) | compact(RowLocation.BOTTOM);
     }
 
     /**
      * Removes empty cells at the given locations.
      * <p>
-     * This is a convenience method simplifying individual calls to the methods
-     * null null null null null null null null null null null null null null
-     * null null null null null null null null null null null null null null
-     * null null null null null null null null null null     {@link #compact(RowLocation)},
+     * This is a convenience method simplifying individual calls to the methods      {@link #compact(RowLocation)},
      * {@link #compact(ColumnLocation)}, and {@link #compact(InternalLocation)}.
      * See these methods for additional details.
      *
@@ -545,6 +561,9 @@ public class Table {
      * @return <code>true</code> if some cells removed
      */
     public boolean compact(ILocation... locations) {
+        if (isEmpty()) {
+            throw new UnsupportedOperationException("The table has no cells defined - compacting it would make it disappear. Is this the expected behaviour here?");
+        }
         if (locations == null) {
             throw new IllegalArgumentException("locations may not be null");
         }
@@ -553,11 +572,11 @@ public class Table {
 
         for (ILocation location : locations) {
             if (location instanceof ColumnLocation) {
-                ret = ret || compact((ColumnLocation) location);
+                ret = ret | compact((ColumnLocation) location);
             } else if (location instanceof RowLocation) {
-                ret = ret || compact((RowLocation) location);
+                ret = ret | compact((RowLocation) location);
             } else if (location instanceof InternalLocation) {
-                ret = ret || compact((InternalLocation) location);
+                ret = ret | compact((InternalLocation) location);
             }
         }
 
@@ -577,6 +596,9 @@ public class Table {
      * @return <code>true</code> if some cells were cut off
      */
     public boolean compact(ColumnLocation columnLocation) {
+        if (isEmpty()) {
+            throw new UnsupportedOperationException("The table has no cells defined - compacting it would make it disappear. Is this the expected behaviour here?");
+        }
         if (columnLocation == null) {
             throw new IllegalArgumentException("columnLocation may not be null");
         }
@@ -597,7 +619,7 @@ public class Table {
 
             int c = 0;
             boolean removable = true;
-            
+
             //.... Count removable columns on the left end
             do {
                 for (int r = 0; r < rowNumber; r++) {
@@ -680,7 +702,7 @@ public class Table {
         }
 
         colNumber -= count;
-        
+
         //.... Check whether the dimensions of the table have changed
         return row0 != old_row0 || col0 != old_col0 || rowNumber != old_rowNumber || colNumber != old_colNumber;
 
@@ -698,6 +720,9 @@ public class Table {
      * @return <code>true</code> if some cells were cut off
      */
     public boolean compact(RowLocation rowLocation) {
+        if (isEmpty()) {
+            throw new UnsupportedOperationException("The table has no cells defined - compacting it would make it disappear. Is this the expected behaviour here?");
+        }
         if (rowLocation == null) {
             throw new IllegalArgumentException("rowLocation may not be null");
         }
@@ -824,6 +849,9 @@ public class Table {
      * @return <code>true</code> if some cells were removed
      */
     public boolean compact(InternalLocation internalLocation) {
+        if (isEmpty()) {
+            throw new UnsupportedOperationException("The table has no cells defined - compacting it would make it disappear. Is this the expected behaviour here?");
+        }
         if (internalLocation == null) {
             throw new IllegalArgumentException("internalLocation may not be null");
         }
