@@ -3,9 +3,9 @@ plugins {
 }
 
 group 'org.ml'
-version '3.0'
+version '3.2'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
 
 sourceSets {
     main {
@@ -37,7 +37,7 @@ dependencies {
         [group: 'org.apache.poi', name: 'poi', version: '[4.1,)'],
         [group: 'org.apache.poi', name: 'poi-ooxml', version: '[4.1,)'],
         [group: 'org.apache.poi', name: 'ooxml-schemas', version: '[1.4,)'],
-        [group: 'org.ml', name: 'launix-tools', version: '[2.1,)'],
+        [group: 'org.ml', name: 'launix-tools', version: '[3.0,)'],
         [group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0']
     )
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
